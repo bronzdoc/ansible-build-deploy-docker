@@ -1,0 +1,22 @@
+---
+- name: build
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "build giphy docker"
+      docker_image:
+        path: "{{ lookup('env', 'APP_PATH') }}"
+        name: lsagastume/giphy-app
+        push: yes
+
+- name: deploy
+  hosts: deploy-machine
+  connection: local
+  tasks:
+    - name: "start container"
+      docker_container:
+        name: "giphy-app"
+        image: lsagastume/giphy-app
+        ports:
+          - "3000:3000"
+
