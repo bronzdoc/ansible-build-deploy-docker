@@ -1,0 +1,8 @@
+---
+- name: "start container"
+  docker_container:
+    name: "giphy-app"
+    image: lsagastume/giphy-app
+    ports:
+      - "3000:3000"
+
