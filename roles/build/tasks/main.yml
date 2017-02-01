@@ -1,8 +1,17 @@
 ---
+- name: "Validate dockerfile"
+  shell: "validate-dockerfile.py -d {{ lookup('env', 'APP_PATH') }}/Dockerfile -b {{ baseimage }}"
+  register: valid_docker_image
+
 - name: "build giphy docker"
   docker_image:
     path: "{{ lookup('env', 'APP_PATH') }}"
-    name: lsagastume/giphy-app
-    push: yes
+    tag:  "{{ tag_name }}"
+    name: "{{ image_name }}"
+    #push: yes
+  when:  valid_docker_image.stdout == "True"
+  register: test
+
+- debug: var=test
 
 
